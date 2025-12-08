@@ -1,0 +1,23 @@
+# Build
+/target/
+
+# Maven Wrapper
+/mvnw
+/mvnw.cmd
+/.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDE
+/.idea/
+/*.iml
+
+# VS Code
+/.vscode/
+
+# Arquivos temporários do sistema
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Recursos gerados
+/out/
