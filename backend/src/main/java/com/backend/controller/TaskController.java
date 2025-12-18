@@ -6,7 +6,6 @@ import com.backend.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
@@ -21,14 +20,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskResponse> save(@RequestBody @Valid TaskRequest request) {
+    public ResponseEntity<TaskResponse> save(@Valid @RequestBody TaskRequest request) {
         TaskResponse response = service.save(request);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.id())
-                .toUri();
+        URI location = URI.create("/api/tasks/" + response.id());
 
         return ResponseEntity.created(location).body(response);
     }

@@ -7,11 +7,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tasks")
@@ -38,5 +40,7 @@ public class Task {
         this.title = request.title();
         this.description = request.description();
         this.priority = request.priority();
+        this.status = request.status();
+        this.dueDate = request.dueDate();
     }
 }

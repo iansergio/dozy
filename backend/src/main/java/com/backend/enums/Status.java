@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Status {
     PENDING("PENDING"),
+    ONGOING("ONGOING"),
     FINISHED("FINISHED");
 
     private final String value;
