@@ -3,7 +3,7 @@ package com.backend.domain.user;
 import com.backend.domain.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.*;
+import lombok.Data;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +23,9 @@ public class User {
     private String password;
     private UserRole role;
 
-    // Um usuário tem várias tarefas
+    /**
+     * Um usuário tem várias tarefas
+     */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks;
 

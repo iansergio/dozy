@@ -1,63 +1,79 @@
 package com.backend.service.impl;
 
 import com.backend.domain.task.Task;
+import com.backend.domain.task.TaskStatus;
+import com.backend.domain.user.User;
 import com.backend.dto.TaskRequestDTO;
 import com.backend.repository.TaskRepository;
+import com.backend.repository.UserRepository;
 import com.backend.service.TaskService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskRepository repository;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public TaskServiceImpl(TaskRepository repository) {
-        this.repository = repository;
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
+        this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public Task create(TaskRequestDTO dto) {
+    public Task save(TaskRequestDTO request) {
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("User associated with task not found"));
+
+        if (request.getStatus() == null) {
+            request.setStatus(TaskStatus.PENDING);
+        }
+
         Task task = new Task(
-                dto.title(),
-                dto.description(),
-                dto.priority(),
-                dto.status(),
-                dto.dueDate(),
-                dto.userId()
+                request.getTitle(),
+                request.getDescription(),
+                request.getPriority(),
+                request.getStatus(),
+                request.getDueDate(),
+                user
         );
 
-        return repository.save(task);
+        return taskRepository.save(task);
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return repository.findAll();
+    public List<Task> findAll() {
+        return taskRepository.findAll();
     }
 
-    public Optional<Task> getTaskById(UUID id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public void delete(UUID id) {
-        repository.deleteById(id);
+    public Optional<Task> findById(UUID id) {
+        return taskRepository.findById(id);
     }
 
     @Override
-    public Task update(UUID id, Task task) {
-        Task updatedTask = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public Task delete(UUID id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found with id: " + id));
+        taskRepository.delete(task);
+        return task;
+    }
 
-        updatedTask.setTitle(task.getTitle());
-        updatedTask.setDescription(task.getDescription());
-        updatedTask.setPriority(task.getPriority());
-        updatedTask.setStatus(task.getStatus());
-        updatedTask.setDueDate(task.getDueDate());
+    @Override
+    public Task update(UUID id, TaskRequestDTO request) {
+        Task updatedTask = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
 
-        return repository.save(updatedTask);
+        updatedTask.setTitle(request.getTitle());
+        updatedTask.setDescription(request.getDescription());
+        updatedTask.setPriority(request.getPriority());
+        updatedTask.setStatus(request.getStatus());
+        updatedTask.setDueDate(request.getDueDate());
+
+        return taskRepository.save(updatedTask);
     }
 }

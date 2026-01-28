@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TaskService {
-    Task create(TaskRequestDTO task);
-    List<Task> getAllTasks();
-    Optional<Task> getTaskById(UUID id);
-    void delete(UUID id);
-    Task update(UUID id, Task request);
+    Task save(TaskRequestDTO request);
+    List<Task> findAll();
+    Optional<Task> findById(UUID id);
+    Task delete(UUID id);
+    Task update(UUID id, TaskRequestDTO request);
 }

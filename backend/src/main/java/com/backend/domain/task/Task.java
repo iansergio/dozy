@@ -3,18 +3,12 @@ package com.backend.domain.task;
 import com.backend.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -35,18 +29,24 @@ public class Task {
 
     private LocalDateTime dueDate;
 
-    // Várias tarefas pertencem a um único usuário
+    /**
+     * Várias tarefas pertencem a um único usuário
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    public Task(String title, String description, TaskPriority priority, TaskStatus status, LocalDateTime localDateTime, UUID id) {
+    public Task() {
+    }
+
+    public Task(String title, String description, TaskPriority priority,
+                TaskStatus status, LocalDateTime dueDate, User user) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.status = status;
-        this.user = new User(id);
+        this.dueDate = dueDate;
+        this.user = user;
     }
-
 }
