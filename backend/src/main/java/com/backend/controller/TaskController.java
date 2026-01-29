@@ -53,7 +53,7 @@ public class TaskController {
             @PathVariable UUID id,
             @Valid @RequestBody UpdateTaskInfosRequest request
     ) {
-        TaskResponse updated = service.updateTaskInfo(id, request);
+        TaskResponse updated = service.updateTaskInfos(id, request);
         return ResponseEntity.ok(updated);
     }
 

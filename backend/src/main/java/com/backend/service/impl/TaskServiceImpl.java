@@ -95,7 +95,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse updateTaskInfo(UUID id, UpdateTaskInfosRequest request) {
+    public TaskResponse updateTaskInfos(UUID id, UpdateTaskInfosRequest request) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Task not found"));
         if (request.getTitle() != null) {
