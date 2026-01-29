@@ -3,7 +3,9 @@ package com.backend.service.impl;
 import com.backend.domain.task.Task;
 import com.backend.domain.task.TaskStatus;
 import com.backend.domain.user.User;
-import com.backend.dto.TaskRequestDTO;
+import com.backend.dto.GetTaskRequest;
+import com.backend.dto.UpdateTaskInfosRequest;
+import com.backend.dto.UpdateTaskStatusRequest;
 import com.backend.repository.TaskRepository;
 import com.backend.repository.UserRepository;
 import com.backend.service.TaskService;
@@ -26,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task save(TaskRequestDTO request) {
+    public Task save(GetTaskRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new NoSuchElementException("User associated with task not found"));
 
@@ -64,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(UUID id, TaskRequestDTO request) {
+    public Task update(UUID id, GetTaskRequest request) {
         Task updatedTask = taskRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Task not found"));
 
@@ -75,5 +77,37 @@ public class TaskServiceImpl implements TaskService {
         updatedTask.setDueDate(request.getDueDate());
 
         return taskRepository.save(updatedTask);
+    }
+
+    @Override
+    public Task updateStatus(UUID id, UpdateTaskStatusRequest request) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        task.setStatus(request.getStatus());
+        return taskRepository.save(task);
+    }
+
+    @Override
+    public Task updateTaskInfo(UUID id, UpdateTaskInfosRequest request) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        if (request.getTitle() != null) {
+            task.setTitle(request.getTitle());
+        }
+
+        if(request.getDescription() != null) {
+            task.setDescription(request.getDescription());
+        }
+
+        if(request.getPriority() != null) {
+            task.setPriority(request.getPriority());
+        }
+
+        if(request.getDueDate() != null) {
+            task.setDueDate(request.getDueDate());
+        }
+        return taskRepository.save(task);
     }
 }

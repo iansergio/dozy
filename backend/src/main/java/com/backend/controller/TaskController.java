@@ -1,7 +1,9 @@
 package com.backend.controller;
 
 import com.backend.domain.task.Task;
-import com.backend.dto.TaskRequestDTO;
+import com.backend.dto.GetTaskRequest;
+import com.backend.dto.UpdateTaskInfosRequest;
+import com.backend.dto.UpdateTaskStatusRequest;
 import com.backend.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequestDTO request) {
+    public ResponseEntity<Task> createTask(@Valid @RequestBody GetTaskRequest request) {
         Task savedTask = service.save(request);
         URI location = URI.create("/api/tasks/" + savedTask.getId());
         return ResponseEntity.created(location).body(savedTask);
@@ -48,8 +50,27 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable UUID id,
-            @Valid @RequestBody TaskRequestDTO request) {
-        Task updatedTask = service.update(id, request);
-        return ResponseEntity.ok(updatedTask);
+            @Valid @RequestBody GetTaskRequest request
+    ) {
+        Task updated = service.update(id, request);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Task> updateTaskStatus(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateTaskStatusRequest request
+    ) {
+        Task updated = service.updateStatus(id, request);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}/infos")
+    public ResponseEntity<Task> updateTaskInfos(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateTaskInfosRequest request
+    ) {
+        Task updated = service.updateTaskInfo(id, request);
+        return ResponseEntity.ok(updated);
     }
 }
