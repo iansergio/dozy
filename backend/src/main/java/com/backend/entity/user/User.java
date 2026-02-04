@@ -4,12 +4,14 @@ import com.backend.core.BaseEntity;
 import com.backend.entity.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {

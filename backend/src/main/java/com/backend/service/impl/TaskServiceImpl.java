@@ -1,12 +1,12 @@
 package com.backend.service.impl;
 
 import com.backend.entity.task.Task;
-import com.backend.entity.task.TaskStatus;
+import com.backend.entity.task.Status;
 import com.backend.entity.user.User;
-import com.backend.dto.SaveTaskRequest;
-import com.backend.dto.TaskResponse;
-import com.backend.dto.UpdateTaskInfosRequest;
-import com.backend.dto.UpdateTaskStatusRequest;
+import com.backend.dto.task.SaveTaskRequest;
+import com.backend.dto.task.TaskResponse;
+import com.backend.dto.task.UpdateTaskInfosRequest;
+import com.backend.dto.task.UpdateTaskStatusRequest;
 import com.backend.repository.TaskRepository;
 import com.backend.repository.UserRepository;
 import com.backend.service.TaskService;
@@ -34,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new NoSuchElementException("User associated with task not found"));
 
         if (request.getStatus() == null) {
-            request.setStatus(TaskStatus.PENDING);
+            request.setStatus(Status.PENDING);
         }
 
         Task task = new Task(

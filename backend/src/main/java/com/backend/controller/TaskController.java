@@ -1,9 +1,9 @@
 package com.backend.controller;
 
-import com.backend.dto.SaveTaskRequest;
-import com.backend.dto.TaskResponse;
-import com.backend.dto.UpdateTaskInfosRequest;
-import com.backend.dto.UpdateTaskStatusRequest;
+import com.backend.dto.task.SaveTaskRequest;
+import com.backend.dto.task.TaskResponse;
+import com.backend.dto.task.UpdateTaskInfosRequest;
+import com.backend.dto.task.UpdateTaskStatusRequest;
 import com.backend.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,7 +32,6 @@ public class TaskController {
     @Operation(summary = "Criar task")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Task não encontrada"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody SaveTaskRequest request) {

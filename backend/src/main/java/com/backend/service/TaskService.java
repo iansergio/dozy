@@ -1,9 +1,9 @@
 package com.backend.service;
 
-import com.backend.dto.SaveTaskRequest;
-import com.backend.dto.TaskResponse;
-import com.backend.dto.UpdateTaskInfosRequest;
-import com.backend.dto.UpdateTaskStatusRequest;
+import com.backend.dto.task.SaveTaskRequest;
+import com.backend.dto.task.TaskResponse;
+import com.backend.dto.task.UpdateTaskInfosRequest;
+import com.backend.dto.task.UpdateTaskStatusRequest;
 
 import java.util.List;
 import java.util.Optional;

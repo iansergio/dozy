@@ -4,12 +4,14 @@ import com.backend.core.BaseEntity;
 import com.backend.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tasks")
 public class Task extends BaseEntity {
@@ -23,10 +25,10 @@ public class Task extends BaseEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private TaskPriority priority;
+    private Priority priority;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private Status status;
 
     private LocalDateTime dueDate;
 
@@ -41,8 +43,8 @@ public class Task extends BaseEntity {
     public Task() {
     }
 
-    public Task(String title, String description, TaskPriority priority,
-                TaskStatus status, LocalDateTime dueDate, User user) {
+    public Task(String title, String description, Priority priority,
+                Status status, LocalDateTime dueDate, User user) {
         this.title = title;
         this.description = description;
         this.priority = priority;

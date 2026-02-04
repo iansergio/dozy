@@ -1,8 +1,8 @@
-package com.backend.dto;
+package com.backend.dto.task;
 
 import com.backend.entity.task.Task;
-import com.backend.entity.task.TaskPriority;
-import com.backend.entity.task.TaskStatus;
+import com.backend.entity.task.Priority;
+import com.backend.entity.task.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,8 +15,8 @@ public class TaskResponse {
     private UUID id;
     private String title;
     private String description;
-    private TaskPriority priority;
-    private TaskStatus status;
+    private Priority priority;
+    private Status status;
     private LocalDateTime dueDate;
     private UUID userId;
 
