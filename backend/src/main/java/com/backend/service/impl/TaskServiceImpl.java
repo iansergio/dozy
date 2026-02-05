@@ -7,6 +7,8 @@ import com.backend.dto.task.SaveTaskRequest;
 import com.backend.dto.task.TaskResponse;
 import com.backend.dto.task.UpdateTaskInfosRequest;
 import com.backend.dto.task.UpdateTaskStatusRequest;
+import com.backend.exception.InvalidDataException;
+import com.backend.exception.TaskNotFoundException;
 import com.backend.repository.TaskRepository;
 import com.backend.repository.UserRepository;
 import com.backend.service.TaskService;
@@ -75,27 +77,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void delete(UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Task not found with id: " + id));
+                .orElseThrow(() -> new TaskNotFoundException(id));
 
         taskRepository.delete(task);
     }
 
     @Override
-    public TaskResponse updateStatus(UUID id, UpdateTaskStatusRequest request) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Task not found"));
-
-        task.setStatus(request.getStatus());
-
-        Task updated = taskRepository.save(task);
-
-        return TaskResponse.from(updated);
-    }
-
-    @Override
     public TaskResponse updateTaskInfos(UUID id, UpdateTaskInfosRequest request) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
         if (request.getTitle() != null) {
             task.setTitle(request.getTitle());
         }
@@ -112,6 +103,17 @@ public class TaskServiceImpl implements TaskService {
             task.setDueDate(request.getDueDate());
         }
 
+        Task updated = taskRepository.save(task);
+
+        return TaskResponse.from(updated);
+    }
+
+    @Override
+    public TaskResponse updateStatus(UUID id, UpdateTaskStatusRequest request) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        task.setStatus(request.getStatus());
         Task updated = taskRepository.save(task);
 
         return TaskResponse.from(updated);
